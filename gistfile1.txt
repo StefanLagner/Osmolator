@@ -1,0 +1,77 @@
+// Nachfüllanlage Aquarium mit Vorlagenüberwachung
+// Statusausgabe via LCD
+// Stand 22.07.2014
+
+#include <LiquidCrystal.h>
+
+LiquidCrystal lcd(12, 11, 10, 5, 4, 3, 2); // Initialisierung LCD Pins
+
+int LED1 = 13;      //Freigabe S2
+int Pumpe = 9;      //Pumpe an/aus
+int LED3 = 6;       //Kontroll LED Vorlage vorhanden
+int S1 = 7;         //schalter vorlagenbehälter
+int S2 = 8;         //Schalter Becken
+int wert1 = 0;      //schaltstellung S1 
+int wert2 = 0;      //schaltstellung S2
+
+void setup()  
+{
+  pinMode(LED1, OUTPUT);    //Status LED Vorlage gefüllt (kann raus bei LCD)
+  pinMode(Pumpe, OUTPUT);
+  pinMode(LED3, OUTPUT);    //Status LED Pumpe EIN/AUS (kann raus bei LCD)
+  pinMode(S1, INPUT);
+  pinMode(S2, INPUT);
+  lcd.begin(16, 4);
+}
+
+void loop()
+{
+  wert1=digitalRead(S1);        //schaltstellung S1 auslesen
+  digitalWrite(LED1, wert1);    //Freigabe S2 durch schaltstellung S1
+  digitalWrite(LED3, wert1);    //Kontrolleuchte (Vorlage gefüllt) gleichsetzten mit schaltstellung S1
+  
+  wert2=digitalRead(S2);       //schaltstellung S2 auslesen
+  digitalWrite(Pumpe, wert2);  //Pumpe an/aus durch gleichsetzen mit schaltstellung S2 
+
+  updateDisplay();
+  delay(400);    //dispplay glätten
+  lcd.clear();
+}
+
+void updateDisplay()
+{
+  lcd.setCursor(3,0);
+  lcd.print("Osmolator 1.0");
+  anzeige1();
+  anzeige2();
+}
+
+void anzeige1()  //Schaltzustand Vorlage
+{
+  wert1 = digitalRead(S1);
+  if(wert1 == 0)
+      {
+        lcd.setCursor(4,2);
+        lcd.print("Vorlage LEER");
+      }
+    else
+      {
+        lcd.setCursor(4,2);
+        lcd.print("Vorlage OK");
+      }
+}
+
+void anzeige2()  // Schaltzustand Beckensensor
+{
+  wert2 = digitalRead(S2);
+  if(wert2 == 0)
+     {
+        lcd.setCursor(4, 3);
+        lcd.print("Pumpe   AUS");
+     }
+    else
+     {
+        lcd.setCursor(4, 3);
+        lcd.print("Pumpe   AN");
+     }
+}
