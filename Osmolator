@@ -4,21 +4,21 @@
 
 #include <LiquidCrystal.h>
 
-LiquidCrystal lcd(12, 11, 10, 5, 4, 3, 2); // Initialisierung LCD Pins
+LiquidCrystal lcd(12, 11, 10, 5, 4, 3, 2); 
 
-int LED1 = 13;      //Freigabe S2
-int Pumpe = 9;      //Pumpe an/aus
-int LED3 = 6;       //Kontroll LED Vorlage vorhanden
-int S1 = 7;         //schalter vorlagenbehälter
-int S2 = 8;         //Schalter Becken
-int wert1 = 0;      //schaltstellung S1 
-int wert2 = 0;      //schaltstellung S2
+int LED1 = 13;      
+int Pumpe = 9;   
+int LED3 = 6;       
+int S1 = 7;         
+int S2 = 8;         
+int wert1 = 0;      
+int wert2 = 0;      
 
 void setup()  
 {
-  pinMode(LED1, OUTPUT);    //Status LED Vorlage gefüllt (kann raus bei LCD)
+  pinMode(LED1, OUTPUT);   
   pinMode(Pumpe, OUTPUT);
-  pinMode(LED3, OUTPUT);    //Status LED Pumpe EIN/AUS (kann raus bei LCD)
+  pinMode(LED3, OUTPUT);    
   pinMode(S1, INPUT);
   pinMode(S2, INPUT);
   lcd.begin(16, 4);
@@ -26,15 +26,15 @@ void setup()
 
 void loop()
 {
-  wert1=digitalRead(S1);        //schaltstellung S1 auslesen
-  digitalWrite(LED1, wert1);    //Freigabe S2 durch schaltstellung S1
-  digitalWrite(LED3, wert1);    //Kontrolleuchte (Vorlage gefüllt) gleichsetzten mit schaltstellung S1
+  wert1=digitalRead(S1);        
+  digitalWrite(LED1, wert1);    
+  digitalWrite(LED3, wert1);    
   
-  wert2=digitalRead(S2);       //schaltstellung S2 auslesen
-  digitalWrite(Pumpe, wert2);  //Pumpe an/aus durch gleichsetzen mit schaltstellung S2 
+  wert2=digitalRead(S2);       
+  digitalWrite(Pumpe, wert2);   
 
   updateDisplay();
-  delay(400);    //dispplay glätten
+  delay(400);    
   lcd.clear();
 }
 
